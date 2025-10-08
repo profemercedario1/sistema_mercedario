@@ -24,7 +24,8 @@ SECRET_KEY = 'django-insecure-joiv@pfdl5!t3$gyr)6_8p_j9*9p&7in%s4t=bjozr4yl$q+yz
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['sistema-mercedario.onrender.com']
+
 
 
 # Application definition

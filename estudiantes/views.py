@@ -1,25 +1,28 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages  # ✅ Importamos los mensajes
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Estudiante
+from .forms import EstudianteForm
+from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/login/')  # 👈 solo usuarios autenticados podrán ver esta página
 def lista_estudiantes(request):
     estudiantes = Estudiante.objects.all()
     return render(request, 'estudiantes/lista_estudiantes.html', {'estudiantes': estudiantes})
 
-@login_required(login_url='/login/')  # 👈 solo usuarios autenticados podrán ver esta página
+@login_required(login_url='/login/')
 def registrar_estudiante(request):
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        nota1 = float(request.POST['nota1'])
-        nota2 = float(request.POST['nota2'])
-        nota3 = float(request.POST['nota3'])
-        promedio = round((nota1 + nota2 + nota3) / 3, 2)
-        Estudiante.objects.create(nombre=nombre, nota1=nota1, nota2=nota2, nota3=nota3, promedio=promedio)
-        messages.success(request, f"✅ {nombre} fue registrado correctamente.")
-        return redirect('/')
-    return render(request, 'estudiantes/registrar_estudiante.html')
+        form = EstudianteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Estudiante registrado correctamente.')
+            return redirect('/')  # ✅ ahora sí funcionará
+        else:
+            messages.error(request, 'Error al registrar el estudiante.')
+    else:
+        form = EstudianteForm()
+
+    return render(request, 'estudiantes/registrar_estudiante.html', {'form': form})
 
 @login_required(login_url='/login/')  # 👈 solo usuarios autenticados podrán ver esta página
 def editar_estudiante(request, id):

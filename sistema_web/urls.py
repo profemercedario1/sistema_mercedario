@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from usuarios import views  # 👈 asegúrate de importar tus vistas de login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('estudiantes.urls')),  # Página principal
-    path('login/', include('usuarios.urls')),  # 🔐 Rutas de login/logout
+    path('', include('estudiantes.urls')),
+    path('login/', views.login_view, name='login'),  # 👈 agrega esta línea
+    path('logout/', views.logout_view, name='logout'),  # opcional
 ]
+
 

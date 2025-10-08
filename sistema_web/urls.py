@@ -21,8 +21,9 @@ from usuarios import views  # 👈 asegúrate de importar tus vistas de login
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('estudiantes.urls')),
-    path('login/', views.login_view, name='login'),  # 👈 agrega esta línea
-    path('logout/', views.logout_view, name='logout'),  # opcional
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]
+
 
 

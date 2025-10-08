@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 def login_view(request):
     if request.method == 'POST':
@@ -8,7 +9,10 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('lista_estudiantes')  # o donde quieras redirigir
+            messages.success(request, 'Inicio de sesión exitoso')
+            return redirect('/')  # redirige a la página principal o lista de estudiantes
+        else:
+            messages.error(request, 'Usuario o contraseña incorrectos')
     return render(request, 'login.html')
 
 def logout_view(request):

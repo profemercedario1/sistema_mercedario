@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Estudiante</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center text-primary">Editar Estudiante</h2>
+    <form method="POST" class="card p-4 shadow">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" value="{{ estudiante.nombre }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Nota 1</label>
+            <input type="number" step="0.01" name="nota1" id="nota1" value="{{ estudiante.nota1 }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Nota 2</label>
+            <input type="number" step="0.01" name="nota2" id="nota2" value="{{ estudiante.nota2 }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Nota 3</label>
+            <input type="number" step="0.01" name="nota3" id="nota3" value="{{ estudiante.nota3 }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Promedio</label>
+            <input type="text" id="promedio" class="form-control bg-light" readonly>
+        </div>
+        <button type="submit" class="btn btn-success w-100">💾 Guardar Cambios</button>
+    </form>
+
+    <div class="text-center mt-3">
+        <a href="/" class="btn btn-secondary">← Volver</a>
+    </div>
+</div>
+
+<script>
+function calcularPromedio() {
+    const n1 = parseFloat(document.getElementById('nota1').value) || 0;
+    const n2 = parseFloat(document.getElementById('nota2').value) || 0;
+    const n3 = parseFloat(document.getElementById('nota3').value) || 0;
+    const promedio = (n1 + n2 + n3) / 3;
+    document.getElementById('promedio').value = promedio ? promedio.toFixed(2) : '';
+}
+document.getElementById('nota1').addEventListener('input', calcularPromedio);
+document.getElementById('nota2').addEventListener('input', calcularPromedio);
+document.getElementById('nota3').addEventListener('input', calcularPromedio);
+calcularPromedio();
+</script>
+</body>
+</html>

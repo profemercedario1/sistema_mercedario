@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-joiv@pfdl5!t3$gyr)6_8p_j9*9p&7in%s4t=bjozr4yl$q+yz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['sistema-mercedario.onrender.com']
 
 
@@ -124,7 +124,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# 🔐 Redirecciones de autenticación
-LOGIN_URL = '/login/'           # URL de inicio de sesión
-LOGIN_REDIRECT_URL = '/'        # A dónde ir después de iniciar sesión
-LOGOUT_REDIRECT_URL = '/login/' # A dónde ir después de cerrar sesión
+# 🔐 Configuración de login/logout
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'        # después de iniciar sesión
+LOGOUT_REDIRECT_URL = '/login/' # después de cerrar sesión
+

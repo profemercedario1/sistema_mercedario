@@ -7,15 +7,13 @@ def login_view(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        if user:
+        if user is not None:
             login(request, user)
-            messages.success(request, 'Inicio de sesión exitoso')
-            return redirect('/')  # redirige a la página principal o lista de estudiantes
+            return redirect('/')
         else:
             messages.error(request, 'Usuario o contraseña incorrectos')
     return render(request, 'login.html')
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
-
+    return redirect('/login/')

@@ -7,14 +7,84 @@
 
 <!-- Mensajes de éxito/error -->
 {% if messages %}
-<div class="container mb-3">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<!-- 🔹 Tabla mejorada -->
+<div class="card mt-4 shadow-sm border-0 rounded-4">
+    <div class="card-body">
+        <h4 class="text-center text-secondary mb-3">
+            <i class="bi bi-table"></i> Lista de Estudiantes
+        </h4>
+
+        {% if estudiantes %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Nota 1</th>
+                        <th>Nota 2</th>
+                        <th>Nota 3</th>
+                        <th>Promedio</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for estudiante in estudiantes %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td class="text-start fw-semibold">{{ estudiante.nombre }}</td>
+                        <td>{{ estudiante.nota1 }}</td>
+                        <td>{{ estudiante.nota2 }}</td>
+                        <td>{{ estudiante.nota3 }}</td>
+
+                        <!-- 🔹 Promedio con color dinámico -->
+                        <td>
+                            {% if estudiante.promedio >= 7 %}
+                                <span class="badge bg-success fs-6">{{ estudiante.promedio }}</span>
+                            {% elif estudiante.promedio >= 5 %}
+                                <span class="badge bg-warning text-dark fs-6">{{ estudiante.promedio }}</span>
+                            {% else %}
+                                <span class="badge bg-danger fs-6">{{ estudiante.promedio }}</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- 🔹 Estado -->
+                        <td>
+                            {% if estudiante.promedio >= 7 %}
+                                <span class="text-success fw-bold">Aprobado</span>
+                            {% elif estudiante.promedio >= 5 %}
+                                <span class="text-warning fw-bold">Regular</span>
+                            {% else %}
+                                <span class="text-danger fw-bold">Reprobado</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- 🔹 Botones de acción -->
+                        <td>
+                            <a href="{% url 'editar_estudiante' estudiante.id %}" class="btn btn-outline-primary btn-sm me-1" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a href="{% url 'eliminar_estudiante' estudiante.id %}" 
+                               class="btn btn-outline-danger btn-sm" 
+                               title="Eliminar"
+                               onclick="return confirm('¿Seguro que deseas eliminar a {{ estudiante.nombre }}?')">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-secondary text-center mt-3">
+            <i class="bi bi-info-circle"></i> No hay estudiantes registrados aún.
+        </div>
+        {% endif %}
     </div>
-    {% endfor %}
 </div>
+
 {% endif %}
 
 <!-- Formulario -->

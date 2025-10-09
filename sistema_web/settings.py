@@ -26,6 +26,9 @@ ALLOWED_HOSTS = [
     'sistema-mercedario.onrender.com'
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://sistema-mercedario.onrender.com']
+
+
 # ========================
 # APLICACIONES INSTALADAS
 # ========================

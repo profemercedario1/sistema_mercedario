@@ -5,9 +5,25 @@
 {% block content %}
 <h2 class="text-center text-primary mb-4">Registrar Estudiante</h2>
 
-<!-- Mensajes de éxito/error -->
+<!-- FORMULARIO DE REGISTRO -->
+<form method="POST" class="card p-4 shadow-sm mb-4 border-0 rounded-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary w-100">
+        💾 Guardar Estudiante
+    </button>
+</form>
+
+<!-- MENSAJES DE ÉXITO O ERROR -->
 {% if messages %}
-<!-- 🔹 Tabla mejorada -->
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-center fw-semibold" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<!-- LISTA DE ESTUDIANTES -->
 <div class="card mt-4 shadow-sm border-0 rounded-4">
     <div class="card-body">
         <h4 class="text-center text-secondary mb-3">
@@ -38,7 +54,7 @@
                         <td>{{ estudiante.nota2 }}</td>
                         <td>{{ estudiante.nota3 }}</td>
 
-                        <!-- 🔹 Promedio con color dinámico -->
+                        <!-- PROMEDIO CON COLOR -->
                         <td>
                             {% if estudiante.promedio >= 7 %}
                                 <span class="badge bg-success fs-6">{{ estudiante.promedio }}</span>
@@ -49,7 +65,7 @@
                             {% endif %}
                         </td>
 
-                        <!-- 🔹 Estado -->
+                        <!-- ESTADO -->
                         <td>
                             {% if estudiante.promedio >= 7 %}
                                 <span class="text-success fw-bold">Aprobado</span>
@@ -60,11 +76,14 @@
                             {% endif %}
                         </td>
 
-                        <!-- 🔹 Botones de acción -->
+                        <!-- BOTONES DE ACCIÓN -->
                         <td>
-                            <a href="{% url 'editar_estudiante' estudiante.id %}" class="btn btn-outline-primary btn-sm me-1" title="Editar">
+                            <a href="{% url 'editar_estudiante' estudiante.id %}" 
+                               class="btn btn-outline-primary btn-sm me-1" 
+                               title="Editar">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
+
                             <a href="{% url 'eliminar_estudiante' estudiante.id %}" 
                                class="btn btn-outline-danger btn-sm" 
                                title="Eliminar"
@@ -84,14 +103,5 @@
         {% endif %}
     </div>
 </div>
-
-{% endif %}
-
-<!-- Formulario -->
-<form method="POST" class="card p-4 shadow-sm mb-4">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary w-100">💾 Guardar Estudiante</button>
-</form>
 
 {% endblock %}

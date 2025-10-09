@@ -26,13 +26,21 @@
 <!-- LISTA DE ESTUDIANTES -->
 <div class="card mt-4 shadow-sm border-0 rounded-4">
     <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
             <h4 class="text-secondary m-0">
                 <i class="bi bi-table"></i> Lista de Estudiantes
             </h4>
 
-            <!-- 🔍 BUSCADOR -->
-            <input type="text" id="buscador" class="form-control w-50" placeholder="🔍 Buscar por nombre...">
+            <!-- 🔍 BUSCADOR Y FILTRO -->
+            <div class="d-flex gap-2 flex-wrap">
+                <input type="text" id="buscador" class="form-control" placeholder="🔍 Buscar por nombre..." style="min-width: 220px;">
+                <select id="filtroEstado" class="form-select" style="min-width: 180px;">
+                    <option value="">🎓 Todos</option>
+                    <option value="aprobado">🟢 Aprobado</option>
+                    <option value="regular">🟡 Regular</option>
+                    <option value="reprobado">🔴 Reprobado</option>
+                </select>
+            </div>
         </div>
 
         {% if estudiantes %}
@@ -52,7 +60,7 @@
                 </thead>
                 <tbody>
                     {% for estudiante in estudiantes %}
-                    <tr>
+                    <tr data-estado="{% if estudiante.promedio >= 7 %}aprobado{% elif estudiante.promedio >= 5 %}regular{% else %}reprobado{% endif %}">
                         <td>{{ forloop.counter }}</td>
                         <td class="text-start fw-semibold">{{ estudiante.nombre }}</td>
                         <td>{{ estudiante.nota1 }}</td>
@@ -109,26 +117,35 @@
     </div>
 </div>
 
-<!-- 🧠 SCRIPT BUSCADOR DINÁMICO -->
+<!-- 🧠 SCRIPT BUSCADOR + FILTRO DINÁMICO -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const buscador = document.getElementById("buscador");
+    const filtroEstado = document.getElementById("filtroEstado");
     const tabla = document.getElementById("tablaEstudiantes");
     const filas = tabla.getElementsByTagName("tr");
 
-    buscador.addEventListener("keyup", function() {
+    function filtrar() {
         const texto = buscador.value.toLowerCase();
+        const estadoSeleccionado = filtroEstado.value;
 
-        // Iterar sobre las filas (desde 1 porque la 0 es encabezado)
         for (let i = 1; i < filas.length; i++) {
             const nombre = filas[i].getElementsByTagName("td")[1]?.textContent.toLowerCase() || "";
-            if (nombre.includes(texto)) {
+            const estado = filas[i].getAttribute("data-estado");
+
+            const coincideNombre = nombre.includes(texto);
+            const coincideEstado = !estadoSeleccionado || estado === estadoSeleccionado;
+
+            if (coincideNombre && coincideEstado) {
                 filas[i].style.display = "";
             } else {
                 filas[i].style.display = "none";
             }
         }
-    });
+    }
+
+    buscador.addEventListener("keyup", filtrar);
+    filtroEstado.addEventListener("change", filtrar);
 });
 </script>
 

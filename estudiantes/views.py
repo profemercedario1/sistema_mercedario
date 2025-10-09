@@ -4,6 +4,7 @@ from .models import Estudiante
 from .forms import EstudianteForm
 from django.contrib.auth.decorators import login_required
 
+
 @login_required(login_url='/login/')
 def registrar_estudiante(request):
     # 🔹 Si se envía el formulario (POST)
@@ -27,7 +28,7 @@ def registrar_estudiante(request):
     })
 
 
-@login_required(login_url='/login/')  # 👈 solo usuarios autenticados podrán ver esta página
+@login_required(login_url='/login/')
 def editar_estudiante(request, id):
     estudiante = get_object_or_404(Estudiante, id=id)
     if request.method == 'POST':
@@ -38,12 +39,15 @@ def editar_estudiante(request, id):
         estudiante.promedio = round((estudiante.nota1 + estudiante.nota2 + estudiante.nota3) / 3, 2)
         estudiante.save()
         messages.info(request, f"✏️ {estudiante.nombre} fue actualizado con éxito.")
-        return redirect('/')
+        # 🔁 Redirigimos al formulario principal (no a '/')
+        return redirect('registrar_estudiante')
     return render(request, 'estudiantes/editar_estudiante.html', {'estudiante': estudiante})
 
-@login_required(login_url='/login/')  # 👈 solo usuarios autenticados podrán ver esta página
+
+@login_required(login_url='/login/')
 def eliminar_estudiante(request, id):
     estudiante = get_object_or_404(Estudiante, id=id)
     estudiante.delete()
     messages.warning(request, f"🗑️ {estudiante.nombre} fue eliminado.")
-    return redirect('/')
+    # 🔁 Redirigimos también a la página de registro
+    return redirect('registrar_estudiante')

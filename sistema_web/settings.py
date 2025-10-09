@@ -117,12 +117,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'     # carpeta usada por Render
 # Whitenoise permite servir archivos estáticos comprimidos en producción
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ========================
-# CONFIGURACIÓN LOGIN
-# ========================
+# 🔐 Configuración de login/logout
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGIN_REDIRECT_URL = '/registrar/'        # ✅ después de iniciar sesión
+LOGOUT_REDIRECT_URL = '/login/'           # después de cerrar sesión
 
 # ========================
 # CLAVE PRIMARIA

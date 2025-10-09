@@ -149,4 +149,38 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
+<!-- PAGINACIÓN -->
+{% if estudiantes.has_other_pages %}
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if estudiantes.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ estudiantes.previous_page_number }}">⬅️ Anterior</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">⬅️ Anterior</span></li>
+        {% endif %}
+
+        {% for num in estudiantes.paginator.page_range %}
+            {% if estudiantes.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if estudiantes.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ estudiantes.next_page_number }}">Siguiente ➡️</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Siguiente ➡️</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+
 {% endblock %}

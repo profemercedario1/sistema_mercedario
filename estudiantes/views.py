@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from .models import Estudiante
 from .forms import EstudianteForm
-from django.contrib.auth.decorators import login_required
-
 
 @login_required(login_url='/login/')
 def registrar_estudiante(request):
@@ -19,13 +19,19 @@ def registrar_estudiante(request):
     else:
         form = EstudianteForm()
 
-    # 🔹 Obtener todos los estudiantes para mostrar en la tabla
-    estudiantes = Estudiante.objects.all().order_by('-id')
+    # 🔹 Obtener todos los estudiantes (ordenados del más reciente)
+    lista_estudiantes = Estudiante.objects.all().order_by('-id')
+
+    # 🔹 Paginación (10 registros por página)
+    paginator = Paginator(lista_estudiantes, 10)
+    page_number = request.GET.get('page')
+    estudiantes = paginator.get_page(page_number)
 
     return render(request, 'estudiantes/registrar_estudiante.html', {
         'form': form,
         'estudiantes': estudiantes,
     })
+
 
 
 @login_required(login_url='/login/')

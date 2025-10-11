@@ -1,0 +1,13 @@
+# Archivos de base de datos
+db.sqlite3
+registros.db
+
+# Carpetas de caché
+__pycache__/
+*/__pycache__/
+
+# Archivos de entorno virtual
+venv/
+*.pyc
+*.pyo
+*.pyd
